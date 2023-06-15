@@ -30,9 +30,9 @@
 
    ![net01](ubuntu_mp_net01.png)
 
-   - Check unbuntu version you want to use
-     - install docker engine if you use clean ubuntu image
-     - <https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script>
+7. Check unbuntu version you want to use
+   - install docker engine if you use clean ubuntu image
+   - <https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script>
 
     ```
     multipass find
@@ -40,7 +40,7 @@
 
    ![find](ubuntu_mp_find.png)
 
-7. Use ubuntu latest image with docker installed
+8. Use ubuntu latest image with docker installed
    - create 3 ubuntu nodes
 
     ```
@@ -54,7 +54,7 @@
 
    ![list](ubuntu_mp_list.png)
 
-8. Update system packages (repeat for each nodes)
+9. Update system packages (repeat for each nodes)
 
     ```
     * open linux shell terminal
@@ -74,7 +74,7 @@
     apt-get update && apt-get upgrade -y
     ```
 
-9. Check docker versions
+10. Check docker versions
 
     ```
     docker --version
@@ -82,7 +82,7 @@
 
     ```
 
-10. Edit the network settings (repeat for each nodes)
+11. Edit the network settings (repeat for each nodes)
 
     - [sample file for node1](m01-cloud-init.yaml)
     - [sample file for node2](m02-cloud-init.yaml)
@@ -113,7 +113,7 @@
     reboot 
     ```
 
-11. Initialize swarm leader node (swarm-m01)
+12. Initialize swarm leader node (swarm-m01)
     - <https://docs.docker.com/engine/swarm/join-nodes/>
 
     ```
@@ -123,14 +123,14 @@
     docker swarm join-token manager
     ```
 
-12. Join the other manager nodes
+13. Join the other manager nodes
 
     ```
     docker swarm join --token SWMTKN-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 172.30.100.101:2377
 
     ```
 
-13. Manage nodes
+14. Manage nodes
     - <https://docs.docker.com/engine/swarm/manage-nodes/>
     ![nodes](ubuntu_sm_nodes.png)
 
@@ -141,7 +141,7 @@
 
     ```
 
-14. Deploy service to the swarm
+15. Deploy service to the swarm
     - [portainer-agent-stack.yml](portainer-agent-stack.yml)
 
     ```
@@ -163,7 +163,7 @@
     - <http://172.30.100.103:9000/>
     - ping -c1 172.30.100.101
 
-15. Manage ubuntu
+16. Manage ubuntu
     - <https://multipass.run/docs/create-an-instance>
 
     ```
