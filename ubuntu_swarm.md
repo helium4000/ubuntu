@@ -1,14 +1,21 @@
 ﻿# notes for ubuntu swarm #
 
 1. Enable Hyper-V feature
+
 2. Enable Windows Subsystem for Linux (WSL)
    - <https://docs.microsoft.com/en-us/windows/wsl/install>
+
 3. Install multipass
+   - <https://ubuntu.com/tutorials/install-ubuntu-server#1-overview>
    - <https://github.com/canonical/multipass>
+   - <https://multipass.run/docs/create-an-instance>
+   - <https://multipass.run/docs/networks-command>
+   - <https://programming.vip/docs/add-fixed-ip-to-ubuntu-instance-of-multipass.html>
+
 4. Create DNS resolv file [resolv-conf.yaml](resolv-conf.yaml)
    - for linux apt-get command to work
 
-    ```md
+    ```yml
     #cloud-config
     bootcmd:
         - printf "[Resolve]\nDNS=8.8.8.8" > /etc/systemd/resolved.conf
@@ -26,6 +33,9 @@
 
     ```
     multipass networks --format yaml
+
+    multipass get local.bridged-network
+    multipass set local.bridged-network=DSWN
     ```  
 
    ![net01](ubuntu_mp_net01.png)
@@ -59,6 +69,8 @@
     ```
     * open linux shell terminal
     multipass shell swarm-m01
+    multipass shell swarm-m02
+    multipass shell swarm-m03
 
     * check DNS
     - ping -c1 8.8.8.8
@@ -84,11 +96,23 @@
 
 11. Edit the network settings (repeat for each nodes)
 
+    - <https://netplan.io/examples>
     - [sample file for node1](m01-cloud-init.yaml)
     - [sample file for node2](m02-cloud-init.yaml)
     - [sample file for node3](m03-cloud-init.yaml)
 
-    ```
+    ```yml
+    * mount the local path to copy the yaml
+    multipass set local.privileged-mounts=Yes
+
+    multipass mount D:\Dev\Docker\dsw swarm-m01:/home/ubuntu/dsw
+    multipass mount D:\Dev\Docker\dsw swarm-m02:/home/ubuntu/dsw
+    multipass mount D:\Dev\Docker\dsw swarm-m03:/home/ubuntu/dsw
+
+    cp /etc/netplan/50-cloud-init.yaml ./m01-cloud-init.yaml
+    cp /etc/netplan/50-cloud-init.yaml ./m02-cloud-init.yaml
+    cp /etc/netplan/50-cloud-init.yaml ./m03-cloud-init.yaml
+
     * linux editor
     nano /etc/netplan/50-cloud-init.yaml
 
@@ -109,6 +133,7 @@
 
     * command to validate the settings
     netplan try
+    netplan apply
 
     reboot 
     ```
@@ -171,6 +196,8 @@
     multipass stop  --all
     multipass start --all
 
+    multipass start swarm-m02
+
     * node information
     multipass info swarm-m01
     ```
@@ -183,14 +210,13 @@
 
 > swarm ingress routing
 
-- <https://upcloud.com/resources/tutorials/load-balancing-docker-swarm-mode>
 - <https://docker-tutorial.schoolofdevops.com/swarm-networking-deepdive/>
 - <https://github.com/nicolaka/netshoot>
 
 ![mesh](ingress-routing-mesh.png)
 
 ```
+docker network ls
 docker network inspect ingress
-
 docker network inspect docker_gwbridge
 ```
