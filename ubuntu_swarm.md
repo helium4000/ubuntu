@@ -204,6 +204,10 @@
   
 ## References ##
 
+> identify the container of a task in a docker swarm
+
+- <https://www.yvesdennels.com/posts/identify_container_docker_swarm/>
+
 > network adapater with fix IP
 
 - <https://netplan.io/examples>
